@@ -1,0 +1,38 @@
+text = """
+Once upon a time in a land far, far away, there was a kingdom ruled by a kind and wise king.
+The king had a beautiful daughter who loved to explore the forests and rivers of the kingdom.
+One day, she met a brave knight who had come from a distant land, seeking adventure and glory.
+Together, they embarked on a journey to discover hidden treasures and secrets of the ancient world.
+"""
+
+# Split the text into words
+words = text.split()
+import random
+from collections import defaultdict
+
+# Create a dictionary to store the Markov chain
+markov_chain = defaultdict(list)
+
+# Populate the Markov chain
+for i in range(len(words) - 1):
+    markov_chain[words[i]].append(words[i + 1])
+
+# Convert the defaultdict to a regular dict
+markov_chain = dict(markov_chain)
+def generate_text(chain, length=50):
+    # Choose a random starting word
+    current_word = random.choice(list(chain.keys()))
+    result = [current_word]
+
+    for _ in range(length - 1):
+        next_words = chain.get(current_word, None)
+        if not next_words:
+            break
+        current_word = random.choice(next_words)
+        result.append(current_word)
+    
+    return ' '.join(result)
+
+# Generate text
+generated_text = generate_text(markov_chain, length=50)
+print(generated_text)
